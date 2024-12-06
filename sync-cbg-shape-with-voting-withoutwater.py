@@ -22,7 +22,6 @@ cbgdf = cbgdf.rename(columns={"T_20_CENS_ADJ_Total": "CENS_Total",
 
 gdf["geometry"] = gdf["geometry"].buffer(0)
 
-# gdf = gdf.to_crs(3310)
 gdf = pd.merge(gdf, cbgdf, on="GEOID20", how="inner")
 gdf = gdf[gdf["Name"] != "Block Group 0"] # Remove water CBGs
 # gdf.info()
