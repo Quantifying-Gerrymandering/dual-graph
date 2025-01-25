@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 ## Read in new data file without water CBGs
 # gdf = gpd.read_file("Downloads/ersp data/shapefiles/synced_cbg_pop_voting_withoutwater_2020/synced_cbg_pop_voting_withoutwater_2020.shp")
-gdf = gpd.read_file("/Users/22ysabelc/Downloads/quantifying-gerrymandering/quantifying-gerrymandering-local/data/shapefile_with_islands/shapefile_with_islands.shp") # synced shapefile generated using script from sync-cbg-shape-with-voting repo
+gdf = gpd.read_file("./data/shapefile_with_islands/shapefile_with_islands.shp") # synced shapefile generated using script from sync-cbg-shape-with-voting repo
 
 # graph = Graph.from_geodataframe(gdf, adjacency="queen")
 graph = Graph.from_geodataframe(gdf, ignore_errors=False)
@@ -29,8 +29,12 @@ ventura_harbor_geoid = "061110025003"
 ventura_harbor_index = gdf.index[gdf["GEOID20"] == ventura_harbor_geoid].tolist()[0]
 for island_index in island_indices[1:]: # channel islands <-> ventura harbor
     graph.add_edges_from([(island_index, ventura_harbor_index)])
+# Add edges (ferry paths) between alcatraz <-> pier 39
+alcatraz_index = 1316
+alcatraz_geoid = gdf.loc[1316, "GEOID20"]
+graph.add_edges_from([(alcatraz_index, pier_39_index)])
 
-graph.to_json("/Users/22ysabelc/Downloads/quantifying-gerrymandering/quantifying-gerrymandering-local/data/dual-graph.json")
+graph.to_json("./dual-graph.json")
 
 positions = {node: (row.geometry.centroid.x, row.geometry.centroid.y) 
              for node, row in gdf.iterrows()}
