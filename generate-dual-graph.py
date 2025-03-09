@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 ## Read in new data file without water CBGs
-# gdf = gpd.read_file("Downloads/ersp data/shapefiles/synced_cbg_pop_voting_withoutwater_2020/synced_cbg_pop_voting_withoutwater_2020.shp")
 # gdf = gpd.read_file("./data/final_shapefile_without_water/final_shapefile_without_water.shp") # synced shapefile generated using script from sync-cbg-shape-with-voting repo
 gdf = gpd.read_file("./data/shapefile_with_islands/shapefile_with_islands.shp")
 
@@ -254,7 +253,7 @@ nx.draw(graph, pos=positions, node_size=10, edge_color="blue")
 plt.show()
 
 if len(components) > 1:
-    # Sort components by size (largest to smallest)
+    # sort components in decreasing size
     components = sorted(components, key=len, reverse=True)
     
     print(f"\nMain component size: {len(components[0])} nodes")
@@ -262,11 +261,11 @@ if len(components) > 1:
     
     for i, component in enumerate(components[1:], 1):
         print(f"\nComponent {i} ({len(component)} nodes):")
-        # Get GEOIDs for these nodes
+
         geoids = [gdf.iloc[node]["GEOID20"] for node in component]
         print("GEOIDs:", geoids)
         
-        # Find closest nodes in main component
+        # find closest nodes in main component
         main_component = components[0]
         min_distance = float('inf')
         closest_pair = None
